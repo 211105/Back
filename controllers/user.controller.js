@@ -14,6 +14,8 @@ const data = dotenv.config({
   path: path.resolve(__dirname, `../environments/.env.${process.env.NODE_ENV}`),
 });
 
+
+
 const get = (req, res) => {
 
 }
