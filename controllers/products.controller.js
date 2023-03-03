@@ -4,7 +4,6 @@ import { dataEnv } from "../config/env.config.js";
 import { fileURLToPath } from "url";
 import { getProduc } from "../models/products.model.js";
 import { PutObjectCommand, S3Client, GetObjectCommand} from "@aws-sdk/client-s3";
-import  { PrismaClient}  from '@prisma/client';
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
 
 
@@ -36,27 +35,7 @@ const produc_view = async function (req, res) {
     });
 };
 
-const bucketName = dataEnv.parsed.BUCKET_NAME
 
-const prisma = new PrismaClient()
-
-const getImage = async  (req,res) =>  {
-
-    const posts = await prisma.posts.findMany({orderBy:[{created: 'desc'}]})
-    
-    for (const post of posts){
-      const getObjectParamns = {
-        Bucket:bucketName,
-        Key: post.imageName,
-      }
-      const command = new GetObjectCommand(getObjectParamns);
-      const url = await getSignedUrl(s3, command,{expiresIn: 360});
-      post.ImageUrl = url
-
-      res.send(posts);
-    } 
-    
-}
 
 
 const produc_create = async function (req, res, upload) {
@@ -134,7 +113,6 @@ export const producController = {
   produc_create,
   Product_update,
   produc_view,
-  Product_delete,
-  getImage,
+  Product_delete
   
 };
